@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Rose | Elite Flowers Uralsk</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f5f0eb;
+            --accent-gold: #b5935b;
+            --dark-text: #2d2a26;
+            --white-glass: rgba(255, 255, 255, 0.88);
+            --2gis-green: #2dbd5c;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+        body {
+            font-family:'Comfortaa', cursive;
+            background:var(--bg-color);
+            color:var(--dark-text);
+            min-height:100vh;
+            overflow-x:hidden;
+        }
+
+        .background-animation {
+            position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none;
+        }
+        .flower-fly {
+            position:absolute; font-size:28px; opacity:0.13;
+            animation:moveUp 18s infinite linear;
+        }
+        @keyframes moveUp {
+            0% { transform:translateY(110vh) rotate(0deg); opacity:0; }
+            10% { opacity:0.22; }
+            90% { opacity:0.22; }
+            100% { transform:translateY(-20vh) rotate(360deg); opacity:0; }
+        }
+
+        header {
+            padding:20px 18px;
+            background:var(--white-glass);
+            backdrop-filter:blur(14px);
+            position:sticky; top:0; z-index:1000;
+            display:flex; justify-content:space-between; align-items:center;
+            box-shadow:0 8px 25px rgba(0,0,0,0.04);
+            border-bottom-left-radius:30px;
+            border-bottom-right-radius:30px;
+        }
+        .logo { font-family:'Playfair Display',serif; font-size:1.8rem; font-style:italic; font-weight:700; }
+        .logo span { color:var(--accent-gold); }
+
+        .main-wrapper { padding:15px; max-width:1100px; margin:0 auto; }
+        .content-card {
+            background:rgba(255,255,255,0.55);
+            backdrop-filter:blur(28px);
+            border-radius:40px; padding:24px;
+            border:1px solid rgba(255,255,255,0.6);
+            box-shadow:0 20px 50px rgba(0,0,0,0.05);
+        }
+
+        .promo-banner {
+            background:linear-gradient(135deg, #fff3e0, #ffe8cc);
+            border-radius:24px; padding:14px 18px; margin-bottom:20px;
+            text-align:center; font-weight:700; color:#c47c2a;
+            box-shadow:0 4px 15px rgba(196,124,42,0.15);
+        }
+
+        .search-container { margin-bottom:20px; }
+        .input-search {
+            width:100%; padding:18px 20px; border-radius:24px; border:none;
+            background:#fff; font-size:1rem; outline:none;
+            box-shadow:0 5px 16px rgba(0,0,0,0.03);
+        }
+
+        .top-socials {
+            display:flex; justify-content:center; gap:18px; margin-bottom:22px;
+        }
+        .social-btn {
+            text-decoration:none; color:var(--accent-gold); font-weight:700; font-size:0.9rem;
+            padding:12px 24px; background:#fff; border-radius:20px;
+            transition:0.3s; box-shadow:0 4px 12px rgba(0,0,0,0.03);
+        }
+        .social-btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(181,147,91,0.2); }
+
+        .flower-grid {
+            display:grid; grid-template-columns:1fr 1fr; gap:16px;
+        }
+        .card-item {
+            background:#fff; border-radius:28px; padding:14px; text-align:center;
+            transition:transform 0.3s ease, box-shadow 0.3s ease;
+            cursor:pointer;
+        }
+        .card-item:hover { transform:translateY(-6px); box-shadow:0 12px 30px rgba(0,0,0,0.08); }
+        .card-item img {
+            width:100%; height:190px; object-fit:cover; border-radius:22px; margin-bottom:12px;
+        }
+        .card-item h3 { font-size:0.95rem; margin-bottom:6px; min-height:40px; line-height:1.3; }
+        .card-item .desc { font-size:0.78rem; color:#666; margin-bottom:10px; line-height:1.3; }
+        .card-item .price { color:var(--accent-gold); font-weight:800; font-size:1.1rem; }
+
+        .order-trigger {
+            width:100%; padding:14px; border-radius:18px; border:none;
+            background:var(--dark-text); color:#fff; font-weight:700; font-size:0.8rem;
+            text-transform:uppercase; cursor:pointer;
+        }
+
+        .bottom-location { margin:35px 0 20px; text-align:center; }
+        .btn-2gis {
+            display:inline-block; background:var(--2gis-green); color:#fff;
+            padding:16px 50px; border-radius:50px; font-weight:700; font-size:0.95rem;
+            text-decoration:none; box-shadow:0 10px 25px rgba(45,189,92,0.25);
+        }
+
+        /* МОДАЛКА */
+        #checkout-modal {
+            display:none; position:fixed; inset:0; background:var(--bg-color); z-index:2000;
+            padding:20px; overflow-y:auto;
+        }
+        .modal-content {
+            max-width:520px; margin:0 auto; background:#fff; border-radius:32px;
+            padding:28px 24px; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.12);
+        }
+        .close-btn {
+            position:absolute; top:16px; right:20px; font-size:1.6rem; cursor:pointer;
+            color:var(--accent-gold); font-weight:700;
+        }
+        .form-control {
+            width:100%; padding:18px; margin-bottom:16px; border-radius:20px;
+            border:1px solid #e0e0e0; background:#fff; font-family:inherit; font-size:1rem;
+        }
+        .date-time-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
+        .label-hint { font-size:0.78rem; color:#999; margin-bottom:6px; display:block; margin-left:4px; }
+
+        .color-row {
+            display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;
+        }
+        .color-option {
+            width:44px; height:44px; border-radius:50%; cursor:pointer;
+            border:2px solid transparent; transition:0.2s;
+        }
+        .color-option.selected { border:3px solid var(--accent-gold); transform:scale(1.12); }
+
+        .submit-final {
+            width:100%; padding:20px; border-radius:24px; border:none;
+            background:var(--accent-gold); color:#fff; font-weight:700; font-size:1rem;
+            text-transform:uppercase; cursor:pointer;
+        }
+
+        /* СПАСИБО ЭКРАН */
+        #thank-you-screen {
+            display:none; position:fixed; inset:0; background:var(--bg-color); z-index:2100;
+            padding:30px; text-align:center;
+        }
+        #thank-you-screen h2 { font-family:'Playfair Display',serif; color:var(--accent-gold); margin:30px 0 16px; }
+        #thank-you-screen p { font-size:1.1rem; color:#444; line-height:1.6; }
+
+        .contacts-footer {
+            text-align:center; margin:40px 0 20px; font-size:0.9rem; color:#666;
+        }
+        .contacts-footer a { color:var(--accent-gold); text-decoration:none; }
+
+        @media (min-width:768px) {
+            .flower-grid { grid-template-columns:1fr 1fr 1fr; }
+            .card-item img { height:240px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-animation" id="bg-layer"></div>
+
+    <header>
+        <div class="logo">Gold <span>Rose</span></div>
+        <div style="font-weight:700; font-size:0.85rem; color:var(--accent-gold);">УРАЛЬСК</div>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="content-card">
+
+            <div class="promo-banner">
+                🎁 Именинникам -10% • Бесплатная открытка от 15 000 ₸ • Доставка от 30 мин
+            </div>
+
+            <div class="search-container">
+                <input type="text" class="input-search" placeholder="Іздеу..." oninput="handleSearch(this.value)">
+            </div>
+
+            <div class="top-socials">
+                <a href="https://wa.me/77074819797" class="social-btn">WhatsApp</a>
+                <a href="https://instagram.com/gold.rose.oral" class="social-btn">Instagram</a>
+            </div>
+
+            <div class="flower-grid" id="catalog-list"></div>
+
+            <div class="bottom-location">
+                <a href="https://2gis.kz/uralsk/geo/70000001094629356" class="btn-2gis" target="_blank">2ГИС КАРТАДА КӨРУ</a>
+            </div>
+
+            <div class="contacts-footer">
+                📞 +7 707 481 97 97<br>
+                🕙 Ежедневно 10:00 – 00:00
+            </div>
+        </div>
+    </div>
+
+    <div id="checkout-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleModal(false)">×</span>
+            <h2 id="selected-flower-title" style="text-align:center; font-family:'Playfair Display'; margin-bottom:24px;"></h2>
+
+            <form id="orderForm">
+                <input type="text" id="user_name" class="form-control" placeholder="Аты-жөніңіз" required>
+
+                <input type="tel" id="user_phone" class="form-control" placeholder="+7 (___) ___-__-__" required pattern="\+7\s?\(\d{3}\)\s?\d{3}-\d{2}-\d{2}">
+
+                <input type="text" id="user_addr" class="form-control" placeholder="Жеткізу мекенжайы" required>
+
+                <div class="date-time-row">
+                    <div>
+                        <span class="label-hint">Күні</span>
+                        <input type="date" id="order_date" class="form-control" required>
+                    </div>
+                    <div>
+                        <span class="label-hint">Уақыты</span>
+                        <input type="time" id="order_time" class="form-control" required>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="label-hint" style="margin-bottom:10px; display:block;">Түсі (қалауыңыз бойынша)</span>
+                    <div class="color-row">
+                        <div class="color-option" style="background:#c41e3a;" data-color="Қызыл" onclick="selectColor(this)"></div>
+                        <div class="color-option" style="background:#fff;" data-color="Ақ" onclick="selectColor(this)"></div>
+                        <div class="color-option" style="background:#ffb6c1;" data-color="Қызғылт" onclick="selectColor(this)"></div>
+                        <div class="color-option" style="background:#ff69b4;" data-color="Қызғылт-қызыл" onclick="selectColor(this)"></div>
+                        <div class="color-option" style="background:#e0c8a0;" data-color="Шампань" onclick="selectColor(this)"></div>
+                        <div class="color-option" style="background:#4b0082;" data-color="Күлгін" onclick="selectColor(this)"></div>
+                    </div>
+                </div>
+
+                <textarea id="user_note" class="form-control" rows="3" placeholder="Қосымша тілек / комментарий"></textarea>
+
+                <button type="submit" class="submit-final">Тапсырысты растау</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="thank-you-screen">
+        <div class="modal-content" style="max-width:480px;">
+            <h2>Рақмет! 🌹</h2>
+            <p>Сіздің тапсырысыңыз қабылданды!<br>Біз сізбен 5-15 минут ішінде хабарласамыз.</p>
+            <button onclick="location.reload()" style="margin-top:30px; padding:16px 40px; background:var(--accent-gold); color:white; border:none; border-radius:50px; font-weight:700; font-size:1rem; cursor:pointer;">
+                Каталогқа қайту
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const API_TOKEN = '8507122907:AAEviSAAXPDtmZCuOQ7BFOfblWLQQxq4rsk';
+        const ADMIN_CHAT = '7521078965';
+
+        const flowerData = [
+            { 
+                id:1, name:'Мини букет', count:7, price:4500, 
+                img: 'https://bukettery.kz/wp-content/uploads/2023/02/%D0%91%D1%83%D0%BA%D0%B5%D1%82-%D0%B8%D0%B7-7-%D0%A0%D0%BE%D0%B7-%D0%9C%D0%B0%D0%BB%D0%B8%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5.jpg', 
+                desc:'7 дана премиум раушан — сүйікті адамға тез сыйлық' 
+            },
+            { 
+                id:2, name:'Classic Rose', count:15, price:8500, 
+                img: 'https://dostavka-tsvety.ru/wp-content/uploads/2023/07/1679602018_21462812.jpg',
+                desc:'15 дана қызыл раушан — классикалық нұсқа' 
+            },
+            { 
+                id:3, name:'Classic Rose', count:25, price:12500, 
+                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNe4vjXyOCKknz9iQ5uDvzDV6N6W5OmahZBgtu9VdnGyLyScxIySalpNA&s=10.jpg',
+                desc:'25 дана қызыл раушан крафт қағазда' 
+            },
+            { 
+                id:4, name:'Pure Love', count:35, price:16900, 
+                img: 'https://i2.storeland.net/2/9170/191699771/afacdb/img1427-.jpg',
+                desc:'35 дана нәзік ақ+қызғылт раушандар' 
+            },
+            { 
+                id:5, name:'Luxury Bloom', count:51, price:23900, 
+                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyESJEwWiqqyzByaZiKrW6-KauwhMnxy4OE4XELNZP_Q&s.jpg',
+                desc:'51 дана премиум раушан — сәнді коробкада' 
+            },
+            { 
+                id:6, name:'Royal Garden', count:101, price:42000, 
+                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXqsb3p402g4pqwnhehK1a0yHTTHuhR5HmFg0Nr0y2vqnhavRlPAJI3IA&s=10.jpg',
+                desc:'101 дана — корольдік масштабтағы сыйлық' 
+            }
+        ];
+
+        let currentItem = null;
+        let selectedColor = '';
+
+        function initStars() {
+            const container = document.getElementById('bg-layer');
+            for(let i=0; i<18; i++){
+                const flower = document.createElement('div');
+                flower.className = 'flower-fly';
+                flower.innerText = '🌹';
+                flower.style.left = Math.random()*100 + 'vw';
+                flower.style.animationDuration = (Math.random()*10 + 12)+'s';
+                flower.style.animationDelay = Math.random()*6 + 's';
+                container.appendChild(flower);
+            }
+        }
+
+        function displayItems(data) {
+            const list = document.getElementById('catalog-list');
+            list.innerHTML = data.map(item => `
+                <div class="card-item" onclick="openCheckout(${item.id})">
+                    <img src="${item.img || 'https://via.placeholder.com/300x300?text=' + encodeURIComponent(item.name)}" alt="${item.name} (${item.count} дана)" loading="lazy">
+                    <h3>${item.name} (${item.count} дана)</h3>
+                    <p class="desc">${item.desc}</p>
+                    <p class="price">${item.price.toLocaleString()} ₸</p>
+                    <button class="order-trigger">Тапсырыс беру</button>
+                </div>
+            `).join('');
+        }
+
+        function handleSearch(query) {
+            const q = query.toLowerCase();
+            const filtered = flowerData.filter(f => 
+                f.name.toLowerCase().includes(q) || 
+                f.desc.toLowerCase().includes(q) ||
+                String(f.count).includes(q)
+            );
+            displayItems(filtered);
+        }
+
+        function openCheckout(id) {
+            currentItem = flowerData.find(f => f.id === id);
+            if(!currentItem) return;
+
+            document.getElementById('selected-flower-title').innerText = 
+                `${currentItem.name} (${currentItem.count} дана) — ${currentItem.price.toLocaleString()} ₸`;
+
+            selectedColor = '';
+            document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
+
+            toggleModal(true);
+        }
+
+        function selectColor(el) {
+            document.querySelectorAll('.color-option').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedColor = el.dataset.color;
+        }
+
+        function toggleModal(show) {
+            document.getElementById('checkout-modal').style.display = show ? 'block' : 'none';
+            if(show) window.scrollTo({top:0, behavior:'smooth'});
+        }
+
+        document.getElementById('user_phone').addEventListener('input', function(e) {
+            let v = e.target.value.replace(/\D/g,'');
+            if(v.length > 0) v = '+' + v;
+            if(v.length > 1) v = v.substring(0,2) + ' (' + v.substring(2);
+            if(v.length > 6) v = v.substring(0,7) + ') ' + v.substring(7);
+            if(v.length > 11) v = v.substring(0,12) + '-' + v.substring(12);
+            if(v.length > 14) v = v.substring(0,15) + '-' + v.substring(15);
+            if(v.length > 17) v = v.substring(0,17);
+            e.target.value = v;
+        });
+
+        document.getElementById('orderForm').onsubmit = async (e) => {
+            e.preventDefault();
+
+            const message = `🌹 ЖАҢА ТАПСЫРЫС!\n\n` +
+                `💐 ${currentItem.name} (${currentItem.count} дана)\n` +
+                `🎨 Түс: ${selectedColor || 'Таңдалмаған'}\n` +
+                `👤 Аты: ${document.getElementById('user_name').value}\n` +
+                `📞 Тел: ${document.getElementById('user_phone').value}\n` +
+                `📍 Адрес: ${document.getElementById('user_addr').value}\n` +
+                `📅 Күні: ${document.getElementById('order_date').value}\n` +
+                `⏰ Уақыты: ${document.getElementById('order_time').value}\n` +
+                `💬 Тілек: ${document.getElementById('user_note').value || '—'}`;
+
+            try {
+                await fetch(`https://api.telegram.org/bot${API_TOKEN}/sendMessage`, {
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({chat_id:ADMIN_CHAT, text:message, parse_mode:'HTML'})
+                });
+
+                toggleModal(false);
+                document.getElementById('thank-you-screen').style.display = 'flex';
+                e.target.reset();
+            } catch(err) {
+                alert('Қате шықты, қайта көріңіз 😔');
+            }
+        };
+
+        window.onload = () => {
+            initStars();
+            displayItems(flowerData);
+        };
+    </script>
+</body>
+</html>
